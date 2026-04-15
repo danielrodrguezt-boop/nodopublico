@@ -1,11 +1,29 @@
-<!doctype html>
-<html>
-<head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>NodoPúblico — Panel de Administración</title>
-</head>
-<body>
-  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
-</body>
-</html>
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "images"
+
+locale: es
+
+collections:
+  - name: "blog"
+    label: "Blog"
+    files:
+      - name: "posts"
+        label: "Entradas del Blog"
+        file: "posts.json"
+        fields:
+          - name: posts
+            label: Entradas
+            widget: list
+            label_singular: Entrada
+            fields:
+              - { label: "Título", name: title, widget: string }
+              - { label: "Categoría", name: category, widget: string }
+              - { label: "Tiempo de lectura", name: readtime, widget: string }
+              - { label: "Frase destacada", name: excerpt, widget: text }
+              - { label: "Contenido", name: content, widget: markdown }
+              - { label: "Título del CTA", name: cta_title, widget: string }
+              - { label: "Subtítulo del CTA", name: cta_subtitle, widget: string }
+              - { label: "Botón del CTA", name: cta_button, widget: string, default: "Conversemos →" }
