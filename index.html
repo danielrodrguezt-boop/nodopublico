@@ -643,20 +643,20 @@
       <div class="form-row">
         <div class="form-group">
           <label>Nombre</label>
-          <input type="text" placeholder="Tu nombre" required/>
+          <input type="text" name="nombre" placeholder="Tu nombre" required/>
         </div>
         <div class="form-group">
           <label>Institución</label>
-          <input type="text" placeholder="Tu institución"/>
+          <input type="text" name="institucion" placeholder="Tu institución"/>
         </div>
       </div>
       <div class="form-group">
         <label>Email</label>
-        <input type="email" placeholder="tu@correo.cl" required/>
+        <input type="email" name="email" placeholder="tu@correo.cl" required/>
       </div>
       <div class="form-group">
         <label>Servicio de interés</label>
-        <select>
+        <select name="servicio">
           <option value="">Selecciona una opción</option>
           <option>Diagnóstico de Capacidades Institucionales</option>
           <option>Implementación de Leyes y Normativas</option>
@@ -666,12 +666,9 @@
       </div>
       <div class="form-group">
         <label>Mensaje</label>
-        <textarea placeholder="Cuéntanos brevemente el desafío de tu institución..." required></textarea>
+        <textarea name="mensaje" placeholder="Cuéntanos brevemente el desafío de tu institución..." required></textarea>
       </div>
       <button type="submit" class="btn-submit">Enviar mensaje →</button>
-      <div class="form-success" id="formSuccess">
-        ✓ Mensaje enviado. Te contactaremos pronto.
-      </div>
     </form>
   </div>
 </section>
