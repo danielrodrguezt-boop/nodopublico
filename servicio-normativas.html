@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Implementación de Leyes y Normativas — NodoPúblico</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700;800&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --navy: #0c1722; --navy2: #111f2e; --navy3: #162435; --orange: #e8781a; --orange2: #f59240; --white: #f0ede8; --muted: #8a9bb0; --border: rgba(232,120,26,0.18); }
+    html { scroll-behavior: smooth; }
+    body { background: var(--navy); color: var(--white); font-family: 'Manrope', sans-serif; font-size: 16px; line-height: 1.7; overflow-x: hidden; }
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 1.2rem 5vw; background: rgba(12,23,34,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+    .nav-logo { display: flex; align-items: center; gap: 0.6rem; text-decoration: none; }
+    .nav-logo svg { width: 32px; height: 32px; }
+    .nav-logo span { font-family: 'Barlow Condensed', sans-serif; font-size: 1.35rem; font-weight: 700; color: var(--white); letter-spacing: 0.02em; }
+    .nav-logo span em { color: var(--orange); font-style: normal; }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { text-decoration: none; color: var(--muted); font-size: 0.85rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--orange); }
+    .nav-cta { background: var(--orange); color: #0c1722; padding: 0.5rem 1.4rem; border-radius: 2px; font-weight: 700; font-size: 0.8rem; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; transition: background 0.2s; }
+    .nav-cta:hover { background: var(--orange2); }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+    .hamburger span { display: block; width: 24px; height: 2px; background: var(--white); }
+    .mobile-menu { display: none; position: fixed; inset: 0; z-index: 99; background: var(--navy); flex-direction: column; align-items: center; justify-content: center; gap: 2.5rem; }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a { font-family: 'Barlow Condensed', sans-serif; font-size: 2rem; font-weight: 700; color: var(--white); text-decoration: none; letter-spacing: 0.04em; text-transform: uppercase; transition: color 0.2s; }
+    .mobile-menu a:hover { color: var(--orange); }
+    .hero { min-height: 60vh; display: flex; flex-direction: column; justify-content: center; padding: 10rem 5vw 5rem; position: relative; overflow: hidden; background: var(--navy2); border-bottom: 1px solid var(--border); }
+    .hero-grid { position: absolute; inset: 0; opacity: 0.04; background-image: linear-gradient(var(--orange) 1px, transparent 1px), linear-gradient(90deg, var(--orange) 1px, transparent 1px); background-size: 60px 60px; }
+    .hero-glow { position: absolute; top: 20%; right: 10%; width: 400px; height: 400px; background: radial-gradient(circle, rgba(232,120,26,0.1) 0%, transparent 70%); pointer-events: none; }
+    .breadcrumb { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1.5rem; font-size: 0.78rem; color: var(--muted); }
+    .breadcrumb a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .breadcrumb a:hover { color: var(--orange); }
+    .breadcrumb span { color: var(--orange); }
+    .hero-tag { display: inline-flex; align-items: center; gap: 0.5rem; border: 1px solid var(--border); padding: 0.35rem 0.9rem; border-radius: 2px; margin-bottom: 1.5rem; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--orange); font-weight: 600; width: fit-content; }
+    .hero h1 { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(2.5rem, 6vw, 5.5rem); font-weight: 800; line-height: 0.95; letter-spacing: -0.01em; text-transform: uppercase; }
+    .hero h1 .accent { color: var(--orange); }
+    .hero-sub { max-width: 600px; margin-top: 1.5rem; color: var(--muted); font-size: 1rem; line-height: 1.75; }
+    .hero-actions { display: flex; gap: 1rem; margin-top: 2.5rem; flex-wrap: wrap; }
+    .btn-primary { background: var(--orange); color: #0c1722; padding: 0.85rem 2rem; font-weight: 700; font-size: 0.85rem; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; border-radius: 2px; transition: background 0.2s; display: inline-block; }
+    .btn-primary:hover { background: var(--orange2); }
+    .btn-secondary { border: 1px solid var(--border); color: var(--white); padding: 0.85rem 2rem; font-weight: 600; font-size: 0.85rem; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; border-radius: 2px; transition: all 0.2s; display: inline-block; }
+    .btn-secondary:hover { border-color: var(--orange); color: var(--orange); }
+    section { padding: 5rem 5vw; }
+    .section-label { font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--orange); font-weight: 600; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.7rem; }
+    .section-label::before { content: ''; display: block; width: 28px; height: 1px; background: var(--orange); }
+    h2 { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(2rem, 4vw, 3.5rem); font-weight: 800; text-transform: uppercase; line-height: 1; letter-spacing: 0.01em; margin-bottom: 1.5rem; }
+    .problema { background: var(--navy2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .problema-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+    .problema p { color: var(--muted); margin-bottom: 1rem; font-size: 0.95rem; }
+    .problema-highlight { background: rgba(232,120,26,0.07); border: 1px solid var(--border); border-left: 3px solid var(--orange); padding: 1.2rem 1.5rem; border-radius: 0 2px 2px 0; margin-top: 1.5rem; font-size: 0.95rem; font-style: italic; color: var(--white); }
+    .normas-lista { display: flex; flex-direction: column; gap: 0.8rem; margin-top: 0.5rem; }
+    .norma-item { display: flex; align-items: center; gap: 1rem; padding: 0.9rem 1.2rem; border: 1px solid var(--border); border-radius: 2px; font-size: 0.88rem; transition: border-color 0.2s; }
+    .norma-item:hover { border-color: var(--orange); }
+    .norma-dot { width: 8px; height: 8px; background: var(--orange); border-radius: 50%; flex-shrink: 0; }
+    .metodo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5px; background: var(--border); margin-top: 2rem; }
+    .metodo-card { background: var(--navy); padding: 2rem; position: relative; overflow: hidden; transition: background 0.3s; }
+    .metodo-card::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 0; background: var(--orange); transition: height 0.4s ease; }
+    .metodo-card:hover::before { height: 100%; }
+    .metodo-card:hover { background: var(--navy2); }
+    .metodo-num { font-family: 'Barlow Condensed', sans-serif; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; color: var(--orange); margin-bottom: 1rem; }
+    .metodo-card h3 { font-family: 'Barlow Condensed', sans-serif; font-size: 1.1rem; font-weight: 700; text-transform: uppercase; margin-bottom: 0.6rem; }
+    .metodo-card p { color: var(--muted); font-size: 0.85rem; }
+    .resultados { background: var(--navy2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .resultados-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+    .resultado-item { display: flex; align-items: flex-start; gap: 1rem; padding: 1rem; border: 1px solid var(--border); border-radius: 2px; margin-bottom: 1rem; transition: border-color 0.2s; }
+    .resultado-item:hover { border-color: var(--orange); }
+    .resultado-icon { width: 36px; height: 36px; color: var(--orange); flex-shrink: 0; margin-top: 0.1rem; }
+    .resultado-item strong { display: block; font-size: 0.9rem; margin-bottom: 0.2rem; }
+    .resultado-item span { font-size: 0.82rem; color: var(--muted); }
+    .entregables-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.2rem; margin-top: 2rem; }
+    .entregable-card { border: 1px solid var(--border); border-radius: 2px; padding: 1.5rem; transition: border-color 0.2s; }
+    .entregable-card:hover { border-color: var(--orange); }
+    .entregable-icon { width: 36px; height: 36px; color: var(--orange); margin-bottom: 1rem; }
+    .entregable-card h4 { font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; font-weight: 700; text-transform: uppercase; margin-bottom: 0.5rem; }
+    .entregable-card p { color: var(--muted); font-size: 0.83rem; }
+    .entregable-optional { font-size: 0.7rem; color: var(--orange); letter-spacing: 0.08em; text-transform: uppercase; margin-top: 0.5rem; display: block; }
+    .dirigido { background: var(--navy2); border-top: 1px solid var(--border); }
+    .dirigido-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+    .dirigido p { color: var(--muted); margin-bottom: 1rem; font-size: 0.95rem; }
+    .dirigido-lista { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; }
+    .dirigido-lista li { display: flex; align-items: flex-start; gap: 0.7rem; font-size: 0.9rem; }
+    .dirigido-lista li::before { content: '→'; color: var(--orange); font-weight: 700; flex-shrink: 0; }
+    .dirigido-box { background: var(--navy); border: 1px solid var(--border); padding: 2rem; border-radius: 2px; }
+    .dirigido-box h4 { font-family: 'Barlow Condensed', sans-serif; font-size: 1.1rem; font-weight: 700; text-transform: uppercase; margin-bottom: 1rem; color: var(--orange); }
+    .cta-section { border-top: 1px solid var(--border); padding: 5rem 5vw; text-align: center; }
+    .cta-section h2 { margin-bottom: 1rem; }
+    .cta-section p { color: var(--muted); max-width: 500px; margin: 0 auto 2rem; }
+    footer { border-top: 1px solid var(--border); padding: 3rem 5vw; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem; }
+    .footer-logo { font-family: 'Barlow Condensed', sans-serif; font-size: 1.2rem; font-weight: 700; }
+    .footer-logo em { color: var(--orange); font-style: normal; }
+    footer p { font-size: 0.8rem; color: var(--muted); }
+    .footer-links { display: flex; gap: 1.5rem; }
+    .footer-links a { font-size: 0.8rem; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--orange); }
+    @media (max-width: 900px) { .problema-grid, .resultados-grid, .dirigido-grid { grid-template-columns: 1fr; gap: 2.5rem; } .nav-links, .nav-cta { display: none; } .hamburger { display: flex; } }
+    @media (max-width: 600px) { section { padding: 3.5rem 1.5rem; } nav { padding: 1rem 1.5rem; } footer { flex-direction: column; text-align: center; } }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">
+    <svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="8" r="3" fill="#e8781a"/><circle cx="35" cy="18" r="3" fill="#e8781a"/><circle cx="30" cy="33" r="3" fill="#e8781a"/><circle cx="10" cy="33" r="3" fill="#e8781a"/><circle cx="5" cy="18" r="3" fill="#e8781a"/><circle cx="20" cy="22" r="3" fill="#e8781a" opacity="0.6"/><line x1="20" y1="8" x2="35" y2="18" stroke="#e8781a" stroke-width="1.2" opacity="0.6"/><line x1="35" y1="18" x2="30" y2="33" stroke="#e8781a" stroke-width="1.2" opacity="0.6"/><line x1="30" y1="33" x2="10" y2="33" stroke="#e8781a" stroke-width="1.2" opacity="0.6"/><line x1="10" y1="33" x2="5" y2="18" stroke="#e8781a" stroke-width="1.2" opacity="0.6"/><line x1="5" y1="18" x2="20" y2="8" stroke="#e8781a" stroke-width="1.2" opacity="0.6"/><line x1="20" y1="8" x2="20" y2="22" stroke="#e8781a" stroke-width="1" opacity="0.4"/><line x1="35" y1="18" x2="20" y2="22" stroke="#e8781a" stroke-width="1" opacity="0.4"/><line x1="30" y1="33" x2="20" y2="22" stroke="#e8781a" stroke-width="1" opacity="0.4"/><line x1="10" y1="33" x2="20" y2="22" stroke="#e8781a" stroke-width="1" opacity="0.4"/><line x1="5" y1="18" x2="20" y2="22" stroke="#e8781a" stroke-width="1" opacity="0.4"/></svg>
+    <span>Nodo<em>Público</em></span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Inicio</a></li>
+    <li><a href="index.html#servicios">Servicios</a></li>
+    <li><a href="index.html#nosotros">Nosotros</a></li>
+    <li><a href="index.html#blog">Blog</a></li>
+    <li><a href="academia.html">Academia</a></li>
+    <li><a href="index.html#contacto">Contacto</a></li>
+  </ul>
+  <a class="nav-cta" href="index.html#contacto">Contáctanos</a>
+  <div class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html" onclick="toggleMenu()">Inicio</a>
+  <a href="index.html#servicios" onclick="toggleMenu()">Servicios</a>
+  <a href="index.html#nosotros" onclick="toggleMenu()">Nosotros</a>
+  <a href="index.html#blog" onclick="toggleMenu()">Blog</a>
+  <a href="academia.html" onclick="toggleMenu()">Academia</a>
+  <a href="index.html#contacto" onclick="toggleMenu()">Contacto</a>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="breadcrumb">
+    <a href="index.html">Inicio</a> / <a href="index.html#servicios">Servicios</a> / <span>Implementación de Leyes y Normativas</span>
+  </div>
+  <div class="hero-tag">Servicio 02</div>
+  <h1>Implementación de<br><span class="accent">Leyes</span> y<br>Normativas</h1>
+  <p class="hero-sub">Transformamos exigencias normativas en sistemas operativos reales. No cumplimiento en el papel, sino implementación efectiva que resiste auditoría y funciona en la práctica.</p>
+  <div class="hero-actions">
+    <a href="index.html#contacto" class="btn-primary">Solicitar este servicio →</a>
+    <a href="index.html#servicios" class="btn-secondary">Ver todos los servicios</a>
+  </div>
+</div>
+
+<!-- EL PROBLEMA -->
+<section class="problema">
+  <div class="problema-grid">
+    <div>
+      <div class="section-label">El problema que resolvemos</div>
+      <h2>Cumplimiento formal vs. implementación real</h2>
+      <p>Las organizaciones enfrentan un desafío recurrente al implementar nuevas normativas: terminan cumpliendo en el papel pero no en la práctica. Los procedimientos se diseñan, se aprueban y se archivan — pero la operación sigue igual.</p>
+      <p>El resultado es una brecha peligrosa: la organización cree que está cumpliendo, pero no resiste una auditoría real ni protege efectivamente a las personas que debería proteger.</p>
+      <div class="problema-highlight">NodoPúblico cierra la brecha entre la norma jurídica, el diseño institucional y la operación efectiva.</div>
+    </div>
+    <div>
+      <div class="section-label">Normativas que abordamos</div>
+      <h2>Marcos normativos frecuentes</h2>
+      <div class="normas-lista">
+        <div class="norma-item"><div class="norma-dot"></div> Ley Karin — Prevención y sanción del acoso laboral y sexual</div>
+        <div class="norma-item"><div class="norma-dot"></div> Ley 20.393 — Responsabilidad penal de personas jurídicas</div>
+        <div class="norma-item"><div class="norma-dot"></div> Unidad de Análisis Financiero (UAF) — Prevención de lavado de activos</div>
+        <div class="norma-item"><div class="norma-dot"></div> Modelos de compliance y prevención de delitos</div>
+        <div class="norma-item"><div class="norma-dot"></div> Normativas sectoriales del sector público</div>
+        <div class="norma-item"><div class="norma-dot"></div> Otras exigencias regulatorias aplicables</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- METODOLOGÍA -->
+<section>
+  <div class="section-label">Cómo trabajamos</div>
+  <h2>De la norma a la operación</h2>
+  <div class="metodo-grid">
+    <div class="metodo-card">
+      <div class="metodo-num">01</div>
+      <h3>Análisis normativo aplicado</h3>
+      <p>Traducimos los requerimientos legales al contexto específico de tu organización, sin abstracción jurídica innecesaria. Lo que importa es lo que aplica a tu caso.</p>
+    </div>
+    <div class="metodo-card">
+      <div class="metodo-num">02</div>
+      <h3>Diseño o rediseño de procesos</h3>
+      <p>Diseñamos los procesos operativos que hacen posible el cumplimiento real, integrándolos a la estructura y flujos existentes.</p>
+    </div>
+    <div class="metodo-card">
+      <div class="metodo-num">03</div>
+      <h3>Definición de roles y responsabilidades</h3>
+      <p>Determinamos quién hace qué, con qué autoridad y ante quién responde. Sin roles claros, el cumplimiento siempre es frágil.</p>
+    </div>
+    <div class="metodo-card">
+      <div class="metodo-num">04</div>
+      <h3>Herramientas de control</h3>
+      <p>Desarrollamos los instrumentos de trazabilidad, registros y control que demuestran cumplimiento ante cualquier auditoría.</p>
+    </div>
+    <div class="metodo-card">
+      <div class="metodo-num">05</div>
+      <h3>Transferencia técnica</h3>
+      <p>Talleres prácticos para que los equipos comprendan, adopten y sostengan el sistema — no solo lo conozcan formalmente.</p>
+    </div>
+    <div class="metodo-card">
+      <div class="metodo-num">06</div>
+      <h3>Integración digital</h3>
+      <p>Incorporación de herramientas digitales cuando aplica: formularios, flujos automatizados, trazabilidad electrónica.</p>
+    </div>
+  </div>
+</section>
+
+<!-- RESULTADOS -->
+<section class="resultados">
+  <div class="resultados-grid">
+    <div>
+      <div class="section-label">Resultados esperados</div>
+      <h2>Implementación que funciona</h2>
+      <div class="resultado-item">
+        <svg class="resultado-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+        <div>
+          <strong>Implementación efectiva, no solo formal</strong>
+          <span>El sistema funciona en la operación real, no solo en los documentos.</span>
+        </div>
+      </div>
+      <div class="resultado-item">
+        <svg class="resultado-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+        <div>
+          <strong>Sistemas que resisten auditoría</strong>
+          <span>Trazabilidad y registros que demuestran cumplimiento ante cualquier revisión externa.</span>
+        </div>
+      </div>
+      <div class="resultado-item">
+        <svg class="resultado-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+        <div>
+          <strong>Reducción de riesgos legales y reputacionales</strong>
+          <span>Protección real ante contingencias legales y exposición institucional.</span>
+        </div>
+      </div>
+      <div class="resultado-item">
+        <svg class="resultado-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+        <div>
+          <strong>Procesos claros y controlables</strong>
+          <span>Flujos operativos que cualquier persona puede ejecutar y cualquier jefatura puede supervisar.</span>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="section-label">Qué recibe tu organización</div>
+      <h2>Entregables</h2>
+      <div class="entregables-grid" style="grid-template-columns: 1fr; margin-top: 1rem;">
+        <div class="entregable-card">
+          <h4>Procedimientos formales</h4>
+          <p>Listos para adopción institucional y firma de autoridades competentes.</p>
+        </div>
+        <div class="entregable-card">
+          <h4>Matriz de responsabilidades</h4>
+          <p>RACI u equivalente con roles, responsables y niveles de autoridad definidos.</p>
+        </div>
+        <div class="entregable-card">
+          <h4>Flujogramas operativos</h4>
+          <p>Representación visual de cada proceso crítico para facilitar comprensión y ejecución.</p>
+        </div>
+        <div class="entregable-card">
+          <h4>Instrumentos de control</h4>
+          <p>Checklists, registros y mecanismos de trazabilidad listos para uso inmediato.</p>
+        </div>
+        <div class="entregable-card">
+          <h4>Acompañamiento en puesta en marcha</h4>
+          <p>Soporte durante la implementación inicial para asegurar la adopción real del sistema.</p>
+          <span class="entregable-optional">Opcional</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DIRIGIDO -->
+<section class="dirigido">
+  <div class="dirigido-grid">
+    <div>
+      <div class="section-label">¿Para quién es este servicio?</div>
+      <h2>Organizaciones con exigencias normativas reales</h2>
+      <p>Trabajamos con organizaciones que necesitan cumplir requisitos regulatorios concretos y quieren hacerlo de manera efectiva, no solo formal.</p>
+      <h4 style="font-size:0.85rem; letter-spacing:0.08em; text-transform:uppercase; margin: 1.5rem 0 0.8rem; color: var(--muted);">Sector público</h4>
+      <ul class="dirigido-lista">
+        <li>Instituciones sujetas a nuevas normativas</li>
+        <li>Organismos con requerimientos de transparencia y probidad</li>
+        <li>Servicios con procesos de fiscalización externa</li>
+      </ul>
+      <h4 style="font-size:0.85rem; letter-spacing:0.08em; text-transform:uppercase; margin: 1.5rem 0 0.8rem; color: var(--muted);">Sector privado</h4>
+      <ul class="dirigido-lista">
+        <li>Empresas obligadas a implementar Ley 20.393 o Ley Karin</li>
+        <li>Entidades sujetas a reporte UAF</li>
+        <li>Organizaciones en proceso de certificación o auditoría</li>
+      </ul>
+    </div>
+    <div>
+      <div class="dirigido-box">
+        <h4>Interlocutores habituales</h4>
+        <ul class="dirigido-lista">
+          <li>Gerencias generales y alta dirección</li>
+          <li>Áreas legales y de compliance</li>
+          <li>Dirección Administrativa y Financiera</li>
+          <li>Recursos Humanos</li>
+          <li>Auditoría interna</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-section">
+  <div class="section-label" style="justify-content:center;">¿Tienes una exigencia normativa que implementar?</div>
+  <h2>Conversemos sobre tu caso</h2>
+  <p>Cuéntanos la normativa que debes implementar y te proponemos un enfoque concreto adaptado a tu organización.</p>
+  <a href="index.html#contacto" class="btn-primary">Solicitar este servicio →</a>
+</div>
+
+<footer>
+  <div class="footer-logo">Nodo<em>Público</em></div>
+  <p>© 2025 NodoPúblico. Todos los derechos reservados.</p>
+  <div class="footer-links">
+    <a href="index.html">Inicio</a>
+    <a href="index.html#servicios">Servicios</a>
+    <a href="index.html#blog">Blog</a>
+    <a href="academia.html">Academia</a>
+    <a href="index.html#contacto">Contacto</a>
+  </div>
+</footer>
+
+<script>
+  function toggleMenu() { document.getElementById('mobileMenu').classList.toggle('open'); }
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.style.opacity = '1'; e.target.style.transform = 'translateY(0)'; } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.metodo-card, .entregable-card, .norma-item, .resultado-item').forEach(el => {
+    el.style.opacity = '0'; el.style.transform = 'translateY(16px)';
+    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>

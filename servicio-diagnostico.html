@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Diagnóstico de Capacidades Institucionales — NodoPúblico</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700;800&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy: #0c1722; --navy2: #111f2e; --navy3: #162435;
+      --orange: #e8781a; --orange2: #f59240;
+      --white: #f0ede8; --muted: #8a9bb0; --border: rgba(232,120,26,0.18);
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--navy); color: var(--white); font-family: 'Manrope', sans-serif; font-size: 16px; line-height: 1.7; overflow-x: hidden; }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.2rem 5vw; background: rgba(12,23,34,0.92);
+      backdrop-filter: blur(12px); border-bottom: 1px solid var(--border);
+    }
+    .nav-logo { display: flex; align-items: center; gap: 0.6rem; text-decoration: none; }
+    .nav-logo svg { width: 32px; height: 32px; }
+    .nav-logo span { font-family: 'Barlow Condensed', sans-serif; font-size: 1.35rem; font-weight: 700; color: var(--white); letter-spacing: 0.02em; }
+    .nav-logo span em { color: var(--orange); font-style: normal; }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { text-decoration: none; color: var(--muted); font-size: 0.85rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--orange); }
+    .nav-cta { background: var(--orange); color: #0c1722; padding: 0.5rem 1.4rem; border-radius: 2px; font-weight: 700; font-size: 0.8rem; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; transition: background 0.2s; }
+    .nav-cta:hover { background: var(--orange2); }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+    .hamburger span { display: block; width: 24px; height: 2px; background: var(--white); }
+    .mobile-menu { display: none; position: fixed; inset: 0; z-index: 99; background: var(--navy); flex-direction: column; align-items: center; justify-content: center; gap: 2.5rem; }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a { font-family: 'Barlow Condensed', sans-serif; font-size: 2rem; font-weight: 700; color: var(--white); text-decoration: none; letter-spacing: 0.04em; text-transform: uppercase; transition: color 0.2s; }
+    .mobile-menu a:hover { color: var(--orange); }
+
+    .hero {
+      min-height: 60vh; display: flex; flex-direction: column; justify-content: center;
+      padding: 10rem 5vw 5rem; position: relative; overflow: hidden; background: var(--navy2);
+      border-bottom: 1px solid var(--border);
+    }
+    .hero-grid { position: absolute; inset: 0; opacity: 0.04; background-image: linear-gradient(var(--orange) 1px, transparent 1px), linear-gradient(90deg, var(--orange) 1px, transparent 1px); background-size: 60px 60px; }
+    .hero-glow { position: absolute; top: 20%; right: 10%; width: 400px; height: 400px; background: radial-gradient(circle, rgba(232,120,26,0.1) 0%, transparent 70%); pointer-events: none; }
+    .breadcrumb { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1.5rem; font-size: 0.78rem; color: var(--muted); }
+    .breadcrumb a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .breadcrumb a:hover { color: var(--orange); }
+    .breadcrumb span { color: var(--orange); }
+    .hero-tag { display: inline-flex; align-items: center; gap: 0.5rem; border: 1px solid var(--border); padding: 0.35rem 0.9rem; border-radius: 2px; margin-bottom: 1.5rem; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--orange); font-weight: 600; width: fit-content; }
+    .hero h1 { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(2.5rem, 6vw, 5.5rem); font-weight: 800; line-height: 0.95; letter-spacing: -0.01em; text-transform: uppercase; }
+    .hero h1 .accent { color: var(--orange); }
+    .hero-sub { max-width: 600px; margin-top: 1.5rem; color: var(--muted); font-size: 1rem; line-height: 1.75; }
+    .hero-actions { display: flex; gap: 1rem; margin-top: 2.5rem; flex-wrap: wrap; }
+    .btn-primary { background: var(--orange); color: #0c1722; padding: 0.85rem 2rem; font-weight: 700; font-size: 0.85rem; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; border-radius: 2px; transition: background 0.2s; display: inline-block; }
+    .btn-primary:hover { background: var(--orange2); }
+    .btn-secondary { border: 1px solid var(--border); color: var(--white); padding: 0.85rem 2rem; font-weight: 600; font-size: 0.85rem; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; border-radius: 2px; transition: all 0.2s; display: inline-block; }
+    .btn-secondary:hover { border-color: var(--orange); color: var(--orange); }
+
+    section { padding: 5rem 5vw; }
+    .section-label { font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--orange); font-weight: 600; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.7rem; }
+    .section-label::before { content: ''; display: block; width: 28px; height: 1px; background: var(--orange); }
+    h2 { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(2rem, 4vw, 3.5rem); font-weight: 800; text-transform: uppercase; line-height: 1; letter-spacing: 0.01em; margin-bottom: 1.5rem; }
+
+    .problema { background: var(--navy2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .problema-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+    .problema p { color: var(--muted); margin-bottom: 1rem; font-size: 0.95rem; }
+    .problema-highlight { background: rgba(232,120,26,0.07); border: 1px solid var(--border); border-left: 3px solid var(--orange); padding: 1.2rem 1.5rem; border-radius: 0 2px 2px 0; margin-top: 1.5rem; font-size: 0.95rem; font-style: italic; color: var(--white); }
+    .niveles { display: flex; flex-direction: column; gap: 1rem; }
+    .nivel-item { display: flex; align-items: center; gap: 1rem; padding: 1rem 1.2rem; border: 1px solid var(--border); border-radius: 2px; transition: border-color 0.2s; }
+    .nivel-item:hover { border-color: var(--orange); }
+    .nivel-num { font-family: 'Barlow Condensed', sans-serif; font-size: 1.8rem; font-weight: 800; color: var(--orange); line-height: 1; min-width: 2rem; }
+    .nivel-item strong { display: block; font-size: 0.9rem; margin-bottom: 0.2rem; }
+    .nivel-item span { font-size: 0.82rem; color: var(--muted); }
+
+    .metodologia { }
+    .metodo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5px; background: var(--border); margin-top: 2rem; }
+    .metodo-card { background: var(--navy); padding: 2rem; position: relative; overflow: hidden; transition: background 0.3s; }
+    .metodo-card::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 0; background: var(--orange); transition: height 0.4s ease; }
+    .metodo-card:hover::before { height: 100%; }
+    .metodo-card:hover { background: var(--navy2); }
+    .metodo-num { font-family: 'Barlow Condensed', sans-serif; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; color: var(--orange); margin-bottom: 1rem; }
+    .metodo-card h3 { font-family: 'Barlow Condensed', sans-serif; font-size: 1.1rem; font-weight: 700; text-transform: uppercase; margin-bottom: 0.6rem; }
+    .metodo-card p { color: var(--muted); font-size: 0.85rem; }
+
+    .ico { background: var(--navy2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .ico-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+    .ico p { color: var(--muted); margin-bottom: 1rem; font-size: 0.95rem; }
+    .ico-dims { display: flex; flex-direction: column; gap: 0.8rem; margin-top: 1.5rem; }
+    .ico-dim { display: flex; align-items: center; gap: 1rem; padding: 0.9rem 1.2rem; border: 1px solid var(--border); border-radius: 2px; font-size: 0.88rem; transition: border-color 0.2s; }
+    .ico-dim:hover { border-color: var(--orange); }
+    .ico-dot { width: 8px; height: 8px; background: var(--orange); border-radius: 50%; flex-shrink: 0; }
+    .ico-pregunta { background: rgba(232,120,26,0.07); border: 1px solid var(--border); padding: 2rem; border-radius: 2px; }
+    .ico-pregunta p { font-family: 'Barlow Condensed', sans-serif; font-size: 1.8rem; font-weight: 700; color: var(--white); line-height: 1.2; margin-bottom: 1rem; }
+    .ico-pregunta span { font-size: 0.85rem; color: var(--muted); }
+
+    .entregables { }
+    .entregables-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.2rem; margin-top: 2rem; }
+    .entregable-card { border: 1px solid var(--border); border-radius: 2px; padding: 1.5rem; transition: border-color 0.2s; }
+    .entregable-card:hover { border-color: var(--orange); }
+    .entregable-icon { width: 36px; height: 36px; color: var(--orange); margin-bottom: 1rem; }
+    .entregable-card h4 { font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; font-weight: 700; text-transform: uppercase; margin-bottom: 0.5rem; }
+    .entregable-card p { color: var(--muted); font-size: 0.83rem; }
+    .entregable-optional { font-size: 0.7rem; color: var(--orange); letter-spacing: 0.08em; text-transform: uppercase; margin-top: 0.5rem; display: block; }
+
+    .dirigido { background: var(--navy2); border-top: 1px solid var(--border); }
+    .dirigido-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+    .dirigido p { color: var(--muted); margin-bottom: 1rem; font-size: 0.95rem; }
+    .dirigido-lista { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; margin-top: 0.5rem; }
+    .dirigido-lista li { display: flex; align-items: flex-start; gap: 0.7rem; font-size: 0.9rem; }
+    .dirigido-lista li::before { content: '→'; color: var(--orange); font-weight: 700; flex-shrink: 0; }
+    .dirigido-box { background: var(--navy); border: 1px solid var(--border); padding: 2rem; border-radius: 2px; }
+    .dirigido-box h4 { font-family: 'Barlow Condensed', sans-serif; font-size: 1.1rem; font-weight: 700; text-transform: uppercase; margin-bottom: 1rem; color: var(--orange); }
+
+    .cta-section { border-top: 1px solid var(--border); padding: 5rem 5vw; text-align: center; }
+    .cta-section h2 { margin-bottom: 1rem; }
+    .cta-section p { color: var(--muted); max-width: 500px; margin: 0 auto 2rem; }
+
+    footer { border-top: 1px solid var(--border); padding: 3rem 5vw; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem; }
+    .footer-logo { font-family: 'Barlow Condensed', sans-serif; font-size: 1.2rem; font-weight: 700; }
+    .footer-logo em { color: var(--orange); font-style: normal; }
+    footer p { font-size: 0.8rem; color: var(--muted); }
+    .footer-links { display: flex; gap: 1.5rem; }
+    .footer-links a { font-size: 0.8rem; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--orange); }
+
+    @media (max-width: 900px) {
+      .problema-grid, .ico-inner, .dirigido-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .nav-links, .nav-cta { display: none; }
+      .hamburger { display: flex; }
+    }
+    @media (max-width: 600px) {
+      section { padding: 3.5rem 1.5rem; }
+      nav { padding: 1rem 1.5rem; }
+      footer { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">
+    <svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="8" r="3" fill="#e8781a"/><circle cx="35" cy="18" r="3" fill="#e8781a"/><circle cx="30" cy="33" r="3" fill="#e8781a"/><circle cx="10" cy="33" r="3" fill="#e8781a"/><circle cx="5" cy="18" r="3" fill="#e8781a"/><circle cx="20" cy="22" r="3" fill="#e8781a" opacity="0.6"/><line x1="20" y1="8" x2="35" y2="18" stroke="#e8781a" stroke-width="1.2" opacity="0.6"/><line x1="35" y1="18" x2="30" y2="33" stroke="#e8781a" stroke-width="1.2" opacity="0.6"/><line x1="30" y1="33" x2="10" y2="33" stroke="#e8781a" stroke-width="1.2" opacity="0.6"/><line x1="10" y1="33" x2="5" y2="18" stroke="#e8781a" stroke-width="1.2" opacity="0.6"/><line x1="5" y1="18" x2="20" y2="8" stroke="#e8781a" stroke-width="1.2" opacity="0.6"/><line x1="20" y1="8" x2="20" y2="22" stroke="#e8781a" stroke-width="1" opacity="0.4"/><line x1="35" y1="18" x2="20" y2="22" stroke="#e8781a" stroke-width="1" opacity="0.4"/><line x1="30" y1="33" x2="20" y2="22" stroke="#e8781a" stroke-width="1" opacity="0.4"/><line x1="10" y1="33" x2="20" y2="22" stroke="#e8781a" stroke-width="1" opacity="0.4"/><line x1="5" y1="18" x2="20" y2="22" stroke="#e8781a" stroke-width="1" opacity="0.4"/></svg>
+    <span>Nodo<em>Público</em></span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Inicio</a></li>
+    <li><a href="index.html#servicios">Servicios</a></li>
+    <li><a href="index.html#nosotros">Nosotros</a></li>
+    <li><a href="index.html#blog">Blog</a></li>
+    <li><a href="academia.html">Academia</a></li>
+    <li><a href="index.html#contacto">Contacto</a></li>
+  </ul>
+  <a class="nav-cta" href="index.html#contacto">Contáctanos</a>
+  <div class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html" onclick="toggleMenu()">Inicio</a>
+  <a href="index.html#servicios" onclick="toggleMenu()">Servicios</a>
+  <a href="index.html#nosotros" onclick="toggleMenu()">Nosotros</a>
+  <a href="index.html#blog" onclick="toggleMenu()">Blog</a>
+  <a href="academia.html" onclick="toggleMenu()">Academia</a>
+  <a href="index.html#contacto" onclick="toggleMenu()">Contacto</a>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="breadcrumb">
+    <a href="index.html">Inicio</a> / <a href="index.html#servicios">Servicios</a> / <span>Diagnóstico de Capacidades Institucionales</span>
+  </div>
+  <div class="hero-tag">Servicio 01</div>
+  <h1>Diagnóstico de<br><span class="accent">Capacidades</span><br>Institucionales</h1>
+  <p class="hero-sub">Identificamos brechas reales de funcionamiento — no solo percepciones ni cumplimiento formal — integrando lo que la organización declara, formaliza y efectivamente opera.</p>
+  <div class="hero-actions">
+    <a href="index.html#contacto" class="btn-primary">Solicitar diagnóstico →</a>
+    <a href="index.html#servicios" class="btn-secondary">Ver todos los servicios</a>
+  </div>
+</div>
+
+<!-- EL PROBLEMA -->
+<section class="problema">
+  <div class="problema-grid">
+    <div>
+      <div class="section-label">El problema que resolvemos</div>
+      <h2>La brecha entre diseño y realidad</h2>
+      <p>La mayoría de los diagnósticos organizacionales se apoyan en encuestas de percepción, revisión documental o auditorías puntuales. Cada herramienta entrega información útil, pero ninguna permite ver el cuadro completo.</p>
+      <p>La percepción puede estar sesgada. La documentación no siempre refleja la práctica real. Las auditorías capturan solo una parte del sistema. El resultado: intervenciones que no escalan, soluciones parciales y brechas que persisten.</p>
+      <div class="problema-highlight">El foco no es describir la organización, sino medir la distancia entre diseño y realidad. Es precisamente ahí donde se originan los problemas de gestión, control y desempeño.</div>
+    </div>
+    <div>
+      <div class="section-label">Nuestro enfoque</div>
+      <h2>Tres niveles integrados</h2>
+      <div class="niveles">
+        <div class="nivel-item">
+          <div class="nivel-num">01</div>
+          <div>
+            <strong>Lo que la organización declara</strong>
+            <span>Misión, objetivos, políticas y compromisos institucionales</span>
+          </div>
+        </div>
+        <div class="nivel-item">
+          <div class="nivel-num">02</div>
+          <div>
+            <strong>Lo que formaliza</strong>
+            <span>Documentos, procedimientos, normativa interna y sistemas</span>
+          </div>
+        </div>
+        <div class="nivel-item">
+          <div class="nivel-num">03</div>
+          <div>
+            <strong>Lo que efectivamente ocurre</strong>
+            <span>Operación real, terreno, indicadores y comportamientos concretos</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- METODOLOGÍA -->
+<section class="metodologia">
+  <div class="section-label">Cómo trabajamos</div>
+  <h2>Metodología integrada</h2>
+  <div class="metodo-grid">
+    <div class="metodo-card">
+      <div class="metodo-num">01</div>
+      <h3>Levantamiento de percepción</h3>
+      <p>Entrevistas y encuestas estructuradas con equipos clave para identificar cómo se experimenta la organización desde adentro.</p>
+    </div>
+    <div class="metodo-card">
+      <div class="metodo-num">02</div>
+      <h3>Revisión documental estructurada</h3>
+      <p>Análisis de procedimientos, manuales, registros y sistemas formales para contrastar lo que está diseñado con lo que se practica.</p>
+    </div>
+    <div class="metodo-card">
+      <div class="metodo-num">03</div>
+      <h3>Observación de terreno</h3>
+      <p>Análisis directo de los procesos operativos reales, identificando cómo se ejecutan las tareas críticas en la práctica cotidiana.</p>
+    </div>
+    <div class="metodo-card">
+      <div class="metodo-num">04</div>
+      <h3>Análisis de indicadores</h3>
+      <p>Revisión de datos de desempeño, tiempos, volúmenes y resultados para validar con evidencia cuantitativa los hallazgos cualitativos.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ICO -->
+<section class="ico">
+  <div class="ico-inner">
+    <div>
+      <div class="section-label">Herramienta propietaria</div>
+      <h2>Índice de Capacidad Organizacional (ICO)</h2>
+      <p>Identificar brechas no es suficiente. Las organizaciones necesitan criterios para priorizar, comparar y decidir dónde intervenir.</p>
+      <p>El ICO es nuestra herramienta de medición integrada que responde la pregunta que de verdad importa: ¿qué tan capaz es esta organización de cumplir sus objetivos de manera efectiva, controlada y sostenible?</p>
+      <p>Permite ir más allá del cumplimiento formal — que muchas organizaciones alcanzan sin traducirlo en resultados reales — para orientar decisiones con rigor.</p>
+      <div class="ico-dims">
+        <div class="ico-dim"><div class="ico-dot"></div> Estructura y procesos</div>
+        <div class="ico-dim"><div class="ico-dot"></div> Control y gestión de riesgos</div>
+        <div class="ico-dim"><div class="ico-dot"></div> Supervisión y seguimiento</div>
+        <div class="ico-dim"><div class="ico-dot"></div> Entorno organizacional</div>
+        <div class="ico-dim"><div class="ico-dot"></div> Capacidad directiva</div>
+      </div>
+    </div>
+    <div>
+      <div class="ico-pregunta">
+        <p>"¿Qué tan capaz es esta organización de lograr lo que se propone?"</p>
+        <span>El ICO entrega una respuesta con rigor técnico, no solo una opinión. Permite priorizar intervenciones, asignar recursos con criterio y orientar la estrategia hacia donde realmente se necesita.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ENTREGABLES -->
+<section class="entregables">
+  <div class="section-label">Qué recibe tu organización</div>
+  <h2>Entregables del servicio</h2>
+  <div class="entregables-grid">
+    <div class="entregable-card">
+      <svg class="entregable-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+      <h4>Informe ejecutivo</h4>
+      <p>Síntesis de hallazgos y recomendaciones clave para la toma de decisiones de la alta dirección.</p>
+    </div>
+    <div class="entregable-card">
+      <svg class="entregable-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+      <h4>Informe técnico</h4>
+      <p>Análisis detallado con evidencia, metodología aplicada y hallazgos por dimensión.</p>
+    </div>
+    <div class="entregable-card">
+      <svg class="entregable-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+      <h4>Resultados del ICO</h4>
+      <p>Medición por las cinco dimensiones del Índice de Capacidad Organizacional con visualización comparativa.</p>
+    </div>
+    <div class="entregable-card">
+      <svg class="entregable-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+      <h4>Taller de devolución</h4>
+      <p>Sesión de trabajo con jefaturas para presentar hallazgos, validar conclusiones y definir prioridades.</p>
+    </div>
+    <div class="entregable-card">
+      <svg class="entregable-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
+      <h4>Hoja de ruta priorizada</h4>
+      <p>Plan de intervención con acciones ordenadas por impacto y viabilidad para los próximos meses.</p>
+      <span class="entregable-optional">Opcional</span>
+    </div>
+  </div>
+</section>
+
+<!-- A QUIÉN VA DIRIGIDO -->
+<section class="dirigido">
+  <div class="dirigido-grid">
+    <div>
+      <div class="section-label">¿Para quién es este servicio?</div>
+      <h2>Organizaciones que necesitan claridad real</h2>
+      <p>Trabajamos con organizaciones que quieren ir más allá del cumplimiento formal y tomar decisiones basadas en evidencia concreta.</p>
+      <h4 style="font-size:0.85rem; letter-spacing:0.08em; text-transform:uppercase; margin: 1.5rem 0 0.8rem; color: var(--muted);">Sector público</h4>
+      <ul class="dirigido-lista">
+        <li>Ministerios y servicios públicos</li>
+        <li>SERVIU y organismos descentralizados</li>
+        <li>Municipalidades</li>
+        <li>Empresas del Estado</li>
+      </ul>
+      <h4 style="font-size:0.85rem; letter-spacing:0.08em; text-transform:uppercase; margin: 1.5rem 0 0.8rem; color: var(--muted);">Sector privado</h4>
+      <ul class="dirigido-lista">
+        <li>Empresas con operación compleja o regulada</li>
+        <li>Organizaciones en procesos de crecimiento o reestructuración</li>
+      </ul>
+    </div>
+    <div>
+      <div class="dirigido-box">
+        <h4>Interlocutores habituales</h4>
+        <ul class="dirigido-lista">
+          <li>Alta dirección y gerencias generales</li>
+          <li>Dirección Administrativa y Financiera (DAF)</li>
+          <li>Control de gestión</li>
+          <li>Auditoría interna</li>
+          <li>Planificación y desarrollo organizacional</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-section">
+  <div class="section-label" style="justify-content:center;">¿Listo para comenzar?</div>
+  <h2>Conversemos sobre tu organización</h2>
+  <p>Cuéntanos el desafío que enfrentas y te proponemos un enfoque diagnóstico adaptado a tu contexto y objetivos.</p>
+  <a href="index.html#contacto" class="btn-primary">Solicitar diagnóstico →</a>
+</div>
+
+<footer>
+  <div class="footer-logo">Nodo<em>Público</em></div>
+  <p>© 2025 NodoPúblico. Todos los derechos reservados.</p>
+  <div class="footer-links">
+    <a href="index.html">Inicio</a>
+    <a href="index.html#servicios">Servicios</a>
+    <a href="index.html#blog">Blog</a>
+    <a href="academia.html">Academia</a>
+    <a href="index.html#contacto">Contacto</a>
+  </div>
+</footer>
+
+<script>
+  function toggleMenu() { document.getElementById('mobileMenu').classList.toggle('open'); }
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.style.opacity = '1'; e.target.style.transform = 'translateY(0)'; } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.metodo-card, .entregable-card, .nivel-item, .ico-dim').forEach(el => {
+    el.style.opacity = '0'; el.style.transform = 'translateY(16px)';
+    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>
