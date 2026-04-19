@@ -29,7 +29,7 @@
     .mobile-menu a { font-family: 'Barlow Condensed', sans-serif; font-size: 2rem; font-weight: 700; color: var(--white); text-decoration: none; letter-spacing: 0.04em; text-transform: uppercase; transition: color 0.2s; }
     .mobile-menu a:hover { color: var(--orange); }
     .hero { min-height: 60vh; display: flex; flex-direction: column; justify-content: center; padding: 10rem 5vw 5rem; position: relative; overflow: hidden; background: var(--navy2); border-bottom: 1px solid var(--border); }
-    .hero-grid { position: absolute; inset: 0; opacity: 0.04; background-image: linear-gradient(var(--orange) 1px, transparent 1px), linear-gradient(90deg, var(--orange) 1px, transparent 1px); background-size: 60px 60px; }
+    .hero-grid { position: absolute; inset: 0; opacity: 0.04; pointer-events: none; background-image: linear-gradient(var(--orange) 1px, transparent 1px), linear-gradient(90deg, var(--orange) 1px, transparent 1px); background-size: 60px 60px; }
     .hero-glow { position: absolute; top: 20%; right: 10%; width: 400px; height: 400px; background: radial-gradient(circle, rgba(232,120,26,0.1) 0%, transparent 70%); pointer-events: none; }
     .breadcrumb { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1.5rem; font-size: 0.78rem; color: var(--muted); }
     .breadcrumb a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
@@ -38,8 +38,8 @@
     .hero-tag { display: inline-flex; align-items: center; gap: 0.5rem; border: 1px solid var(--border); padding: 0.35rem 0.9rem; border-radius: 2px; margin-bottom: 1.5rem; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--orange); font-weight: 600; width: fit-content; }
     .hero h1 { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(2.5rem, 6vw, 5.5rem); font-weight: 800; line-height: 0.95; letter-spacing: -0.01em; text-transform: uppercase; }
     .hero h1 .accent { color: var(--orange); }
-    .hero-sub { max-width: 600px; margin-top: 1.5rem; color: var(--muted); font-size: 1rem; line-height: 1.75; }
-    .hero-actions { display: flex; gap: 1rem; margin-top: 2.5rem; flex-wrap: wrap; }
+    .hero-sub { max-width: 600px; margin-top: 1.5rem; color: var(--muted); font-size: 1rem; line-height: 1.75; position: relative; z-index: 1; }
+    .hero-actions { display: flex; gap: 1rem; margin-top: 2.5rem; flex-wrap: wrap; position: relative; z-index: 1; }
     .btn-primary { background: var(--orange); color: #0c1722; padding: 0.85rem 2rem; font-weight: 700; font-size: 0.85rem; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; border-radius: 2px; transition: background 0.2s; display: inline-block; }
     .btn-primary:hover { background: var(--orange2); }
     .btn-secondary { border: 1px solid var(--border); color: var(--white); padding: 0.85rem 2rem; font-weight: 600; font-size: 0.85rem; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; border-radius: 2px; transition: all 0.2s; display: inline-block; }
